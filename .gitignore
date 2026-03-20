@@ -1,0 +1,21 @@
+# Compiled class files
+bin/
+*.class
+
+# VS Code settings (optional: remove next line if you want to share settings)
+.vscode/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+desktop.ini
+
+# Package files
+*.jar
+*.war
+*.ear
+
+# Logs
+*.log
