@@ -14,9 +14,6 @@ import java.util.stream.Collectors;
 public class TaskScheduler {
     private final List<Task> tasks = new ArrayList<>();
 
-    // ── Persistence ──────────────────────────────────────────────────────────
-
-    /** Saves all tasks to a binary file. */
     public void save(String filePath) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))) {
             oos.writeObject(tasks);
@@ -25,11 +22,6 @@ public class TaskScheduler {
         }
     }
 
-    /**
-     * Loads tasks from a binary file.
-     * Also restores the Task ID counter so new tasks don't clash with loaded ones.
-     * Returns true if the file was found and loaded successfully.
-     */
     @SuppressWarnings("unchecked")
     public boolean load(String filePath) {
         File f = new File(filePath);
@@ -38,7 +30,6 @@ public class TaskScheduler {
             List<Task> loaded = (List<Task>) ois.readObject();
             tasks.clear();
             tasks.addAll(loaded);
-            // Restore counter to avoid ID collisions
             int maxId = tasks.stream().mapToInt(Task::getId).max().orElse(0);
             Task.setCounter(maxId + 1);
             return true;
@@ -47,8 +38,6 @@ public class TaskScheduler {
             return false;
         }
     }
-
-    // ── CRUD ─────────────────────────────────────────────────────────────────
 
     public Task addTask(String name, String description, LocalDateTime deadline, Priority priority) {
         Task t = new Task(name, description, deadline, priority);
@@ -81,8 +70,6 @@ public class TaskScheduler {
         return tasks.stream().filter(t -> t.getId() == id).findFirst();
     }
 
-    // ── Queries ───────────────────────────────────────────────────────────────
-
     public List<Task> getAllTasksSorted() {
         return tasks.stream().sorted().collect(Collectors.toList());
     }
@@ -109,8 +96,6 @@ public class TaskScheduler {
                 .filter(t -> t.getStatus() != Status.COMPLETED)
                 .min((a, b) -> Double.compare(b.getEffectiveScore(), a.getEffectiveScore()));
     }
-
-    // ── Stats ─────────────────────────────────────────────────────────────────
 
     public int  getTotalCount()      { return tasks.size(); }
     public long getPendingCount()    { return tasks.stream().filter(t -> t.getStatus() == Status.PENDING).count(); }
