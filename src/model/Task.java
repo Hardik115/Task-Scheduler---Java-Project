@@ -9,7 +9,6 @@ public class Task implements Comparable<Task>, Serializable {
     private static final long serialVersionUID = 1L;
     private static int counter = 1;
 
-    /** Called after loading from disk to prevent ID collisions. */
     public static void setCounter(int next) { counter = next; }
 
     private final int id;
@@ -67,7 +66,6 @@ public class Task implements Comparable<Task>, Serializable {
         return Double.compare(other.getEffectiveScore(), this.getEffectiveScore());
     }
 
-    // Getters
     public int getId()               { return id; }
     public String getName()          { return name; }
     public String getDescription()   { return description; }
@@ -76,7 +74,6 @@ public class Task implements Comparable<Task>, Serializable {
     public Status getStatus()        { return status; }
     public LocalDateTime getCreatedAt() { return createdAt; }
 
-    // Setters
     public void setName(String name)            { this.name = name; }
     public void setDescription(String desc)     { this.description = desc; }
     public void setDeadline(LocalDateTime dl)   { this.deadline = dl; }
